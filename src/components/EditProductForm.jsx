@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import productService from "../services/productServices";
+import getAllCategories from "../services/categoryServices";
 export default function EditProductFom() {
   const { id } = useParams();
 
@@ -8,20 +9,28 @@ export default function EditProductFom() {
     name: "",
     description: "",
     price: 0,
+    category: "",
   });
+  const [categories, setCategories] = useState([]);
 
   async function getProduct() {
     const rep = await productService.getProductById(id);
     console.log(rep.data.product);
     setProduct(rep.data.product);
   }
+  async function getCategory() {
+    const res = await getAllCategories();
+    setCategories(res.data);
+  }
   useEffect(() => {
     getProduct();
+    getCategory();
   }, []);
 
   function handleChange(event) {
     const { name, value } = event.target;
     setProduct((prevValue) => {
+      console.log(name + ': ' + value)
       return {
         ...prevValue,
         [name]: value,
@@ -40,7 +49,7 @@ export default function EditProductFom() {
         <div className="mt-5 md:col-span-2 md:mt-0">
           <form onSubmit={() => updateProduct()}>
             <div className="overflow-hidden shadow sm:rounded-md">
-              <div className="bg-zinc-200 px-4 py-5 sm:p-6">
+              <div className="bg-zinc-200 px-4 py-5 sm:p-6 bg-opacity-40">
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
                     <label
@@ -54,7 +63,7 @@ export default function EditProductFom() {
                       name="name"
                       id="name"
                       autoComplete="given-name"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="shadow block py-2 px-4 w-full rounded"
                       value={product.name}
                       onChange={handleChange}
                     />
@@ -72,10 +81,33 @@ export default function EditProductFom() {
                       name="price"
                       id="price"
                       autoComplete="family-name"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="shadow block py-2 px-4 w-full rounded"
                       value={product.price}
                       onChange={handleChange}
                     />
+                  </div>
+                  <div className="col-span-6 sm:col-span-6">
+                    <label
+                      htmlFor="country"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Category
+                    </label>
+                    <select
+                      name="category"
+                      autoComplete="category"
+                      className="mt-1 block w-full uppercase rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                      onChange={handleChange}
+                      value={product.category.name}
+                    >
+                      {categories.map((e, i) => {
+                        return (
+                          <option value={e._id} key={i}>
+                            {e.name}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                   <div className="col-span-6 sm:col-span-6">
                     <label
