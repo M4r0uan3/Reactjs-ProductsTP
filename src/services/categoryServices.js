@@ -1,7 +1,13 @@
 import http from "./http";
 
 const getAllCategories = async () => {
-  return http.get("/categories");
+  return await http.get("/categories");
 };
 
-export default getAllCategories;
+async function deleteCategory(idC) {
+  return await http.delete(`/categories/${idC}`);
+}
+
+const catServices = { getAllCategories, deleteCategory };
+export default catServices;
+

@@ -37,7 +37,7 @@ export default function ProductList() {
                     </th>
                     <th
                       scope="col"
-                      className="w-20 p-3 text-sm font-semibold tracking-wide text-left text-gray-500"
+                      className="w-30 p-3 text-sm font-semibold tracking-wide text-left text-gray-500"
                     >
                       Nom
                     </th>
@@ -75,7 +75,7 @@ export default function ProductList() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {products?.map((elem, i) => {
-                    console.log(elem)
+                    // console.log(elem)
                     return (
                       <tr key={elem._id} className="bg-white">
                         <td className="p-3 text-sm text-gray-700">

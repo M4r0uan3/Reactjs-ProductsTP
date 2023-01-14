@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import productService from "../services/productServices";
-import getAllCategories from "../services/categoryServices";
+import catServices from "../services/categoryServices";
 export default function EditProductFom() {
   const { id } = useParams();
 
@@ -15,11 +15,11 @@ export default function EditProductFom() {
 
   async function getProduct() {
     const rep = await productService.getProductById(id);
-    console.log(rep.data.product);
+    // console.log(rep.data.product);
     setProduct(rep.data.product);
   }
   async function getCategory() {
-    const res = await getAllCategories();
+    const res = await catServices.getAllCategories();
     setCategories(res.data);
   }
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function EditProductFom() {
   function handleChange(event) {
     const { name, value } = event.target;
     setProduct((prevValue) => {
-      console.log(name + ': ' + value)
+      // console.log(name + ': ' + value)
       return {
         ...prevValue,
         [name]: value,
@@ -98,8 +98,9 @@ export default function EditProductFom() {
                       autoComplete="category"
                       className="mt-1 block w-full uppercase rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       onChange={handleChange}
-                      value={product.category.name}
+                      value={product.category}
                     >
+                      <option value="" key="0">---</option>
                       {categories.map((e, i) => {
                         return (
                           <option value={e._id} key={i}>
@@ -122,7 +123,7 @@ export default function EditProductFom() {
                       name="description"
                       id="description"
                       autoComplete="family-name"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-md font-medium border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       value={product.description}
                       onChange={handleChange}
                     />

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import getAllCategories from "../services/categoryServices";
+import catServices from "../services/categoryServices";
 import productService from "../services/productServices";
 export default function AddProductFom() {
   const [product, setProduct] = useState({
@@ -15,13 +15,14 @@ export default function AddProductFom() {
     getCategory();
   },[]);
   async function getCategory() {
-    const res = await getAllCategories();
+    const res = await catServices.getAllCategories();
+    // console.log(res.data);
     setCategories(res.data);
   }
   function handleChange(event) {
     const { name, value } = event.target;
     setProduct((prevValue) => {
-      console.log(name + ': ' + value)
+      // console.log(name + ': ' + value)
       return {
         ...prevValue,
         [name]: value,
@@ -85,6 +86,7 @@ export default function AddProductFom() {
                       className="uppercase mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       onChange={handleChange}
                     >
+                      <option value="" key="0">---</option>
                       {categories.map((e, i) => {
                         return (
                           <option value={e._id} key={i}>
@@ -106,7 +108,7 @@ export default function AddProductFom() {
                       cols="100"
                       name="description"
                       id="description"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-md font-medium border-gray-300 shadow-sm py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       value={product.description}
                       onChange={handleChange}
                     />
